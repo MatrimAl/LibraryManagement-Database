@@ -34,17 +34,28 @@ namespace LibraryManagement
             dataGridView1.DataSource = dt;  
 
         }
-        public void Insert(byte[] image)
+        public void Insert(String bookId, String bookName, String authorName,String bookStock)
         {
             conn.Open();
-            String querry = "Insert INTO LibraryBooks (BookID, BookName, BookAuthor, BookStock, BookImage) values (@bookid, @bookname, @bookauthor, @bookstock, @bookimage)";
+            String querry = "UPDATE LibraryBooks SET BookID = @bookid , BookName =  @bookname, BookAuthor = @bookauthor, BookStock = @bookstock Where BookID = @bookid , BookName =  @bookname, BookAuthor = @bookauthor, BookStock = @bookstock ";
             SqlCommand cmd = new SqlCommand(querry, conn);
-            cmd.Parameters.AddWithValue("@bookid", bookId.Text);
-            cmd.Parameters.AddWithValue("@bookname", bookName.Text);
-            cmd.Parameters.AddWithValue("@bookauthor", authorName.Text);
-            cmd.Parameters.AddWithValue("@bookstock", bookStock.Text);
+            cmd.Parameters.AddWithValue("@bookid", bookId);
+            cmd.Parameters.AddWithValue("@bookname", bookName);
+            cmd.Parameters.AddWithValue("@bookauthor", authorName);
+            cmd.Parameters.AddWithValue("@bookstock", bookStock);
+            cmd.ExecuteNonQuery();
+            conn.Close();
+        }
+
+        public void InsertImage(byte[] image, String BookID)
+        {
+            conn.Open();
+            String querry = "UPDATE LibraryBooks SET BookImage = @bookimage Where BookID = @bookid";
+            SqlCommand cmd = new SqlCommand(querry, conn);
+            cmd.Parameters.AddWithValue("@bookid", BookID);
             cmd.Parameters.AddWithValue("@bookimage", image);
             cmd.ExecuteNonQuery();
+            conn.Close();
         }
         byte[] ConvertImageToBytes(Image img)
         {
@@ -70,15 +81,16 @@ namespace LibraryManagement
                 if(ofd.ShowDialog() == DialogResult.OK)
                 {
                     pictureBox1.Image = Image.FromFile(ofd.FileName);
-                    Insert(ConvertImageToBytes(pictureBox1.Image));
+                    //InsertImage(ConvertImageToBytes(pictureBox1.Image));
                 }
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            //Insert();
             LoadData();
-            conn.Close();
+            
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -88,17 +100,30 @@ namespace LibraryManagement
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            String BookID = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+            String BookName = dataGridView1.CurrentRow.Cells[1].Value.ToString();
+            String BookAuthor = dataGridView1.CurrentRow.Cells[2].Value.ToString();
+            String BookStock = dataGridView1.CurrentRow.Cells[3].Value.ToString();
+            String BookImage = dataGridView1.CurrentRow.Cells[4].Value.ToString();
+            Insert(BookID, BookName, BookAuthor, BookStock);
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
-                if (row.Cells[4].Value != null || row.Cells[4].Value != DBNull.Value || String.IsNullOrWhiteSpace(row.Cells[4].Value.ToString()))   //Check for null reference
+                if (dataGridView1.CurrentCell.ColumnIndex.Equals(4) && e.RowIndex != -1)
                 {
-                    byte[] toBytes = (byte[])dataGridView1.CurrentRow.Cells[4].Value;
-                    pictureBox1.Image = ConvertByteArrayToImage(toBytes);
-                    pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-                   
-
+                    using (OpenFileDialog ofd = new OpenFileDialog() { Filter = "Image files(*.jpg;*.jpeg)|*.jpg;*.jpeg", Multiselect = false })
+                    {
+                        if (ofd.ShowDialog() == DialogResult.OK)
+                        {
+                            pictureBox1.Image = Image.FromFile(ofd.FileName);
+                            InsertImage(ConvertImageToBytes(pictureBox1.Image), BookID);
+                        }
+                    }
                 }
             }
+
+                
         }
+
+        
     }
 }
