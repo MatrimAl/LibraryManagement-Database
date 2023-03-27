@@ -64,11 +64,22 @@
     <Compile Include="AdminListBooks.Designer.cs">
       <DependentUpon>AdminListBooks.cs</DependentUpon>
     </Compile>
+    <Compile Include="GivingBook.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GivingBook.Designer.cs">
+      <DependentUpon>GivingBook.cs</DependentUpon>
+    </Compile>
     <Compile Include="Home.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Home.Designer.cs">
       <DependentUpon>Home.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LibraryManagementDataSet11.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LibraryManagementDataSet11.xsd</DependentUpon>
     </Compile>
     <Compile Include="LibraryManagementDataSet2.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -104,6 +115,9 @@
     <EmbeddedResource Include="AdminListBooks.resx">
       <DependentUpon>AdminListBooks.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GivingBook.resx">
+      <DependentUpon>GivingBook.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Home.resx">
       <DependentUpon>Home.cs</DependentUpon>
     </EmbeddedResource>
@@ -126,6 +140,17 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="LibraryManagementDataSet11.xsc">
+      <DependentUpon>LibraryManagementDataSet11.xsd</DependentUpon>
+    </None>
+    <None Include="LibraryManagementDataSet11.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LibraryManagementDataSet11.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="LibraryManagementDataSet11.xss">
+      <DependentUpon>LibraryManagementDataSet11.xsd</DependentUpon>
+    </None>
     <None Include="LibraryManagementDataSet2.xsc">
       <DependentUpon>LibraryManagementDataSet2.xsd</DependentUpon>
     </None>

@@ -3,63 +3,70 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
+using System.Data.SqlTypes;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace LibraryManagement
 {
-    public partial class ListBooks : Form
+    public partial class GivingBook : Form
     {
-        public ListBooks() 
+        public GivingBook()
         {
             InitializeComponent();
         }
+        SqlConnection conn = new SqlConnection(@"Data Source=Ismail\SQLEXPRESS;Initial Catalog=LibraryManagement;Integrated Security=True;Pooling=False");
 
-        private void ListBooks_Load(object sender, EventArgs e)
+        private void GivingBook_Load(object sender, EventArgs e)
         {
+            // TODO: This line of code loads data into the 'libraryManagementDataSet1.GivenBooks' table. You can move, or remove it, as needed.
+            this.givenBooksTableAdapter.Fill(this.libraryManagementDataSet1.GivenBooks);
             // TODO: This line of code loads data into the 'libraryManagementDataSet.LibraryBooks' table. You can move, or remove it, as needed.
             this.libraryBooksTableAdapter.Fill(this.libraryManagementDataSet.LibraryBooks);
 
         }
-        SqlConnection conn = new SqlConnection(@"Data Source=Ismail\SQLEXPRESS;Initial Catalog=LibraryManagement;Integrated Security=True;Pooling=False");
-      
-        public void insertDatabase(String bookID, String bookName, String bookAuthor, byte[] image)
+        public void LoadData()
         {
-            //insert to GivenBooks table
-            conn.Open();
-            String querry = "INSERT INTO GivenBooks (BookID, BookName, BookAuthor, BookImage) Values (@bookid, @bookname, @bookauthor, @bookimage)";
+            DataTable dt = new DataTable("LibraryBooks");
+            SqlDataAdapter adapter = new SqlDataAdapter("Select * From LibraryBooks", conn);
+            adapter.Fill(dt);
+            dataGridView1.DataSource = dt;
+
+        }
+        public void updateDatabase(String bookId)
+        {
+            String querry = "UPDATE TableName SET TableField = TableField + 1 Where BookID=@bookid";
             SqlCommand cmd = new SqlCommand(querry, conn);
-            cmd.Parameters.AddWithValue("@bookid", bookID);
-            cmd.Parameters.AddWithValue("@bookname", bookName);
-            cmd.Parameters.AddWithValue("@bookauthor", bookAuthor);
-            cmd.Parameters.AddWithValue("@bookimage", image);
+            cmd.Parameters.AddWithValue("@bookid", bookId);
+            conn.Open();
             cmd.ExecuteNonQuery();
             conn.Close();
-
+        }
+        public void insertDatabase(String bookId, String bookName, String authorName, String bookStock, byte[] image)
+        {
 
         }
 
-        public void updateDatabase(String bookID)
+
+        public void checkDatabase(String bookId)
         {
+
             conn.Open();
-            String querry2 = "UPDATE LibraryBooks SET BookStock = BookStock - 1 Where BookID=@bookid";
-            SqlCommand cmd2 = new SqlCommand(querry2, conn);
-            cmd2.Parameters.AddWithValue("@bookid", bookID);
-            cmd2.ExecuteNonQuery();
+            SqlCommand check_Book_ID = new SqlCommand("SELECT COUNT(*) FROM [LibraryUsers] WHERE ([BookID] = @bookid)", conn);
+            check_Book_ID.Parameters.AddWithValue("@bookid", bookId);
+            int BookIdExit = (int)check_Book_ID.ExecuteScalar();
+            if (BookIdExit > 0)
+            {
+                 //update
+            }
+            else { 
+                //insert
+            }
             conn.Close();
-        }
-        public void checkDatabase(String bookId) 
-        {
-            // if username and bookid is not match, insert to database selected book
-            // if username and bookid is match, update database selected book
-           
-
         }
         public Image ConvertByteArrayToImage(byte[] data)
         {
@@ -67,15 +74,31 @@ namespace LibraryManagement
             Image img = (Image)converter.ConvertFrom(data);
             return img;
         }
+        byte[] ConvertImageToBytes(Image img)
+        {
+            if (img == null) return null;
+            else
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    img.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                    return ms.ToArray();
+                }
+            }
+        }
+
         String BookID;
         String BookName;
         String BookAuthor;
+        String BookStock;
         byte[] toBytes;
+
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             BookID = dataGridView1.CurrentRow.Cells[0].Value.ToString();
             BookName = dataGridView1.CurrentRow.Cells[1].Value.ToString();
             BookAuthor = dataGridView1.CurrentRow.Cells[2].Value.ToString();
+            BookStock = dataGridView1.CurrentRow.Cells[3].Value.ToString();
             if ((byte[])dataGridView1.CurrentRow.Cells[4].Value == null)
             {
                 toBytes = null;
@@ -91,12 +114,12 @@ namespace LibraryManagement
                     byte[] toBytes = (byte[])dataGridView1.CurrentRow.Cells[4].Value;
                     pictureBox1.Image = ConvertByteArrayToImage(toBytes);
                     pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-                    bookLabel.Text = dataGridView1.CurrentRow.Cells[1].Value.ToString();
-                    authorLabel.Text = dataGridView1.CurrentRow.Cells[2].Value.ToString();
+                    bookNameLabel.Text = dataGridView1.CurrentRow.Cells[1].Value.ToString();
+                    authorNameLabel.Text = dataGridView1.CurrentRow.Cells[2].Value.ToString();
 
                 }
             }
-            
+
         }
     }
 }

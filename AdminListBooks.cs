@@ -21,6 +21,7 @@ namespace LibraryManagement
         public AdminListBooks()
         {
             InitializeComponent();
+           
         }
         SqlConnection conn = new SqlConnection(@"Data Source=Ismail\SQLEXPRESS;Initial Catalog=LibraryManagement;Integrated Security=True;Pooling=False");
 
@@ -42,30 +43,60 @@ namespace LibraryManagement
             conn.Open();
             String querry = "INSERT INTO LibraryBooks (BookID, BookName, BookAuthor, BookStock, BookImage) Values (@bookid, @bookname, @bookauthor, @bookstock, @bookimage)";
             SqlCommand cmd = new SqlCommand(querry, conn);
+            SqlCommand check_Book_ID = new SqlCommand("SELECT COUNT(*) FROM [LibraryUsers] WHERE ([BookID] = @bookid)", conn);
             cmd.Parameters.AddWithValue("@bookid", bookId);
             cmd.Parameters.AddWithValue("@bookname", bookName);
             cmd.Parameters.AddWithValue("@bookauthor", authorName);
             cmd.Parameters.AddWithValue("@bookstock", bookStock);
             cmd.Parameters.AddWithValue("@bookimage", image);
-
-            cmd.ExecuteNonQuery();
+            check_Book_ID.Parameters.AddWithValue("@bookid", bookId);
+            int BookIdExit = (int)check_Book_ID.ExecuteScalar();
+            if (BookIdExit > 0)
+            {
+                MessageBox.Show("This ID already exit.", null, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                cmd.ExecuteNonQuery();
+            }
             conn.Close();
         }
-
-        public void updateDatabase(String bookId, String bookName, String authorName, String bookStock, byte[] image)
+        public void deleteDatabase(String bookId)
         {
             conn.Open();
-            String querry = "UPDATE LibraryBooks SET BookID = @bookid , BookName =  @bookname, BookAuthor = @bookauthor, BookStock = @bookstock, BookImage = @bookimage Where BookID = @bookid ";
+            String querry = "DELETE FROM LibraryBooks WHERE BookID = @bookid";
             SqlCommand cmd = new SqlCommand(querry, conn);
+            SqlCommand check_Book_ID = new SqlCommand("SELECT COUNT(*) FROM [LibraryUsers] WHERE ([BookID] = @bookid)", conn);
+            cmd.Parameters.AddWithValue("@bookid", bookId);
+            check_Book_ID.Parameters.AddWithValue("@bookid", bookId);
+            int BookIdExit = (int)check_Book_ID.ExecuteScalar();
+            if (BookIdExit > 0)
+            {
+                cmd.ExecuteNonQuery();
+            }
+            else
+            {
+                MessageBox.Show("This ID does not exit.", null, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            conn.Close();
+        }
+        public void updateDatabase(String bookId, String bookName, String authorName, String bookStock, byte[] image)
+        {
+
+            conn.Open();
+            String querry = "UPDATE LibraryBooks SET BookName=@bookname,BookAuthor=@bookauthor,BookStock=@bookstock,BookImage=@bookimage Where BookID=@bookid";
+            SqlCommand cmd = new SqlCommand(querry, conn);
+            SqlCommand check_Book_ID = new SqlCommand("SELECT COUNT(*) FROM [LibraryUsers] WHERE ([BookID] = @bookid)", conn);
             cmd.Parameters.AddWithValue("@bookid", bookId);
             cmd.Parameters.AddWithValue("@bookname", bookName);
             cmd.Parameters.AddWithValue("@bookauthor", authorName);
             cmd.Parameters.AddWithValue("@bookstock", bookStock);
             cmd.Parameters.AddWithValue("@bookimage", image);
+            
             cmd.ExecuteNonQuery();
             conn.Close();
         }
-        byte[] ConvertImageToBytes(Image img)
+        byte[] ConvertImageToBytes(Image img) 
         {
             if (img == null) return null;
             else
@@ -104,7 +135,7 @@ namespace LibraryManagement
 
         private void updateButton_Click(object sender, EventArgs e)
         {
-            updateDatabase(BookID, BookName, BookAuthor, BookStock, ConvertImageToBytes(pictureBox1.Image));
+            updateDatabase(BookID, BookName, BookAuthor, BookStock, toBytes);
         }
 
         private void refreshButton_Click(object sender, EventArgs e)
@@ -121,18 +152,29 @@ namespace LibraryManagement
         String BookName;
         String BookAuthor;
         String BookStock;
-        String BookImage;
+        byte[] toBytes;
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            String BookID = dataGridView1.CurrentRow.Cells[0].Value.ToString();
-            String BookName = dataGridView1.CurrentRow.Cells[1].Value.ToString();
-            String BookAuthor = dataGridView1.CurrentRow.Cells[2].Value.ToString();
-            String BookStock = dataGridView1.CurrentRow.Cells[3].Value.ToString();
+            BookID = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+            BookName = dataGridView1.CurrentRow.Cells[1].Value.ToString();
+            BookAuthor = dataGridView1.CurrentRow.Cells[2].Value.ToString();
+            BookStock = dataGridView1.CurrentRow.Cells[3].Value.ToString();
+            if ((byte[])dataGridView1.CurrentRow.Cells[4].Value == null)
+            {
+                toBytes = null;
+            }
+            else
+            {
+                toBytes = (byte[])dataGridView1.CurrentRow.Cells[4].Value;
+            }
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
+                pictureBox1.Image = ConvertByteArrayToImage(toBytes);
+                pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
                 if (dataGridView1.CurrentCell.ColumnIndex.Equals(4) && e.RowIndex != -1)
                 {
+                    
                     using (OpenFileDialog ofd = new OpenFileDialog() { Filter = "Image files(*.jpg;*.jpeg)|*.jpg;*.jpeg", Multiselect = false })
                     {
                         if (ofd.ShowDialog() == DialogResult.OK)
