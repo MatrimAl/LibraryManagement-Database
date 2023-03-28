@@ -14,9 +14,11 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace LibraryManagement
 {
-    public partial class ListBooks : Form
+    public partial class TakingBook : Form
     {
-        public ListBooks() 
+        Login login = new Login();
+        public static String username = Login.username;
+        public TakingBook() 
         {
             InitializeComponent();
         }
@@ -58,7 +60,24 @@ namespace LibraryManagement
         {
             // if username and bookid is not match, insert to database selected book
             // if username and bookid is match, update database selected book
-           
+            String querry = "Select * From GivenBooks Where BookID=@bookid, Username=@username";
+            SqlCommand cmd = new SqlCommand(querry, conn);
+            cmd.Parameters.AddWithValue("@bookid", bookId);
+            cmd.Parameters.AddWithValue("@username", username);
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                MessageBox.Show("You have already this book.");
+
+            }
+            else
+            {
+                insertDatabase(bookId, BookName, BookAuthor, toBytes);
+
+            }
+            conn.Close();
+
 
         }
         public Image ConvertByteArrayToImage(byte[] data)

@@ -64,6 +64,12 @@
     <Compile Include="AdminListBooks.Designer.cs">
       <DependentUpon>AdminListBooks.cs</DependentUpon>
     </Compile>
+    <Compile Include="AdminListUsername.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AdminListUsername.Designer.cs">
+      <DependentUpon>AdminListUsername.cs</DependentUpon>
+    </Compile>
     <Compile Include="GivingBook.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -86,11 +92,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LibraryManagementDataSet2.xsd</DependentUpon>
     </Compile>
-    <Compile Include="ListBooks.cs">
+    <Compile Include="LibraryManagementDataSet21.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LibraryManagementDataSet21.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="TakingBook.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ListBooks.Designer.cs">
-      <DependentUpon>ListBooks.cs</DependentUpon>
+    <Compile Include="TakingBook.Designer.cs">
+      <DependentUpon>TakingBook.cs</DependentUpon>
     </Compile>
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
@@ -106,6 +117,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TakingBooks.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TakingBooks.Designer.cs">
+      <DependentUpon>TakingBooks.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="AdminPanel.resx">
       <DependentUpon>AdminPanel.cs</DependentUpon>
     </EmbeddedResource>
@@ -115,14 +132,17 @@
     <EmbeddedResource Include="AdminListBooks.resx">
       <DependentUpon>AdminListBooks.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AdminListUsername.resx">
+      <DependentUpon>AdminListUsername.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GivingBook.resx">
       <DependentUpon>GivingBook.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Home.resx">
       <DependentUpon>Home.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ListBooks.resx">
-      <DependentUpon>ListBooks.cs</DependentUpon>
+    <EmbeddedResource Include="TakingBook.resx">
+      <DependentUpon>TakingBook.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
@@ -161,6 +181,17 @@
     </None>
     <None Include="LibraryManagementDataSet2.xss">
       <DependentUpon>LibraryManagementDataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="LibraryManagementDataSet21.xsc">
+      <DependentUpon>LibraryManagementDataSet21.xsd</DependentUpon>
+    </None>
+    <None Include="LibraryManagementDataSet21.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LibraryManagementDataSet21.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="LibraryManagementDataSet21.xss">
+      <DependentUpon>LibraryManagementDataSet21.xsd</DependentUpon>
     </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -13,6 +13,7 @@ namespace LibraryManagement
 {
     public partial class ChangePass : Form
     {
+        public static String username = Login.username;
         public ChangePass()
         {
             InitializeComponent();
@@ -20,8 +21,7 @@ namespace LibraryManagement
         SqlConnection conn = new SqlConnection(@"Data Source=Ismail\SQLEXPRESS;Initial Catalog=LibraryManagement;Integrated Security=True;Pooling=False");
         private void sumbitButton_Click(object sender, EventArgs e)
         {
-            Login login = new Login();
-            String username = login.username;
+            
 
             String querry = "UPDATE LibraryUsers SET password = @password Where username = @username";
             SqlCommand cmd = new SqlCommand(querry, conn);

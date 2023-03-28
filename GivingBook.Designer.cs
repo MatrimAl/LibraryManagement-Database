@@ -43,13 +43,21 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.usernameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bookIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.booknameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bookNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bookAuthorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bookImageDataGridViewImageColumn = new System.Windows.Forms.DataGridViewImageColumn();
+            this.givenBooksBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.libraryManagementDataSet2 = new LibraryManagement.LibraryManagementDataSet2();
+            this.givenBooksTableAdapter1 = new LibraryManagement.LibraryManagementDataSet2TableAdapters.GivenBooksTableAdapter();
+            this.updateButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.libraryManagementDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.libraryBooksBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.libraryManagementDataSet1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.givenBooksBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.givenBooksBindingSource1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.libraryManagementDataSet2)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -135,11 +143,13 @@
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.usernameDataGridViewTextBoxColumn,
             this.bookIDDataGridViewTextBoxColumn,
-            this.booknameDataGridViewTextBoxColumn});
-            this.dataGridView1.DataSource = this.givenBooksBindingSource;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 304);
+            this.bookNameDataGridViewTextBoxColumn,
+            this.bookAuthorDataGridViewTextBoxColumn,
+            this.bookImageDataGridViewImageColumn});
+            this.dataGridView1.DataSource = this.givenBooksBindingSource1;
+            this.dataGridView1.Location = new System.Drawing.Point(12, 298);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(431, 213);
+            this.dataGridView1.Size = new System.Drawing.Size(541, 219);
             this.dataGridView1.TabIndex = 5;
             // 
             // usernameDataGridViewTextBoxColumn
@@ -154,17 +164,54 @@
             this.bookIDDataGridViewTextBoxColumn.HeaderText = "BookID";
             this.bookIDDataGridViewTextBoxColumn.Name = "bookIDDataGridViewTextBoxColumn";
             // 
-            // booknameDataGridViewTextBoxColumn
+            // bookNameDataGridViewTextBoxColumn
             // 
-            this.booknameDataGridViewTextBoxColumn.DataPropertyName = "Bookname";
-            this.booknameDataGridViewTextBoxColumn.HeaderText = "Bookname";
-            this.booknameDataGridViewTextBoxColumn.Name = "booknameDataGridViewTextBoxColumn";
+            this.bookNameDataGridViewTextBoxColumn.DataPropertyName = "BookName";
+            this.bookNameDataGridViewTextBoxColumn.HeaderText = "BookName";
+            this.bookNameDataGridViewTextBoxColumn.Name = "bookNameDataGridViewTextBoxColumn";
+            // 
+            // bookAuthorDataGridViewTextBoxColumn
+            // 
+            this.bookAuthorDataGridViewTextBoxColumn.DataPropertyName = "BookAuthor";
+            this.bookAuthorDataGridViewTextBoxColumn.HeaderText = "BookAuthor";
+            this.bookAuthorDataGridViewTextBoxColumn.Name = "bookAuthorDataGridViewTextBoxColumn";
+            // 
+            // bookImageDataGridViewImageColumn
+            // 
+            this.bookImageDataGridViewImageColumn.DataPropertyName = "BookImage";
+            this.bookImageDataGridViewImageColumn.HeaderText = "BookImage";
+            this.bookImageDataGridViewImageColumn.Name = "bookImageDataGridViewImageColumn";
+            // 
+            // givenBooksBindingSource1
+            // 
+            this.givenBooksBindingSource1.DataMember = "GivenBooks";
+            this.givenBooksBindingSource1.DataSource = this.libraryManagementDataSet2;
+            // 
+            // libraryManagementDataSet2
+            // 
+            this.libraryManagementDataSet2.DataSetName = "LibraryManagementDataSet2";
+            this.libraryManagementDataSet2.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // givenBooksTableAdapter1
+            // 
+            this.givenBooksTableAdapter1.ClearBeforeFill = true;
+            // 
+            // updateButton
+            // 
+            this.updateButton.Location = new System.Drawing.Point(435, 266);
+            this.updateButton.Name = "updateButton";
+            this.updateButton.Size = new System.Drawing.Size(118, 26);
+            this.updateButton.TabIndex = 6;
+            this.updateButton.Text = "Update";
+            this.updateButton.UseVisualStyleBackColor = true;
+            this.updateButton.Click += new System.EventHandler(this.updateButton_Click);
             // 
             // GivingBook
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(486, 529);
+            this.ClientSize = new System.Drawing.Size(566, 529);
+            this.Controls.Add(this.updateButton);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.authorNameLabel);
             this.Controls.Add(this.bookNameLabel);
@@ -180,6 +227,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.libraryManagementDataSet1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.givenBooksBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.givenBooksBindingSource1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.libraryManagementDataSet2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -199,8 +248,14 @@
         private System.Windows.Forms.BindingSource givenBooksBindingSource;
         private LibraryManagementDataSet1TableAdapters.GivenBooksTableAdapter givenBooksTableAdapter;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private LibraryManagementDataSet2 libraryManagementDataSet2;
+        private System.Windows.Forms.BindingSource givenBooksBindingSource1;
+        private LibraryManagementDataSet2TableAdapters.GivenBooksTableAdapter givenBooksTableAdapter1;
         private System.Windows.Forms.DataGridViewTextBoxColumn usernameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn bookIDDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn booknameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn bookNameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn bookAuthorDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewImageColumn bookImageDataGridViewImageColumn;
+        private System.Windows.Forms.Button updateButton;
     }
 }

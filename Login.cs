@@ -15,7 +15,7 @@ namespace LibraryManagement
 {
     public partial class Login : Form
     {
-        public string username;
+        public static String username;
 
         public Login()
         {

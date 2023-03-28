@@ -43,7 +43,7 @@ namespace LibraryManagement
             conn.Open();
             String querry = "INSERT INTO LibraryBooks (BookID, BookName, BookAuthor, BookStock, BookImage) Values (@bookid, @bookname, @bookauthor, @bookstock, @bookimage)";
             SqlCommand cmd = new SqlCommand(querry, conn);
-            SqlCommand check_Book_ID = new SqlCommand("SELECT COUNT(*) FROM [LibraryUsers] WHERE ([BookID] = @bookid)", conn);
+            SqlCommand check_Book_ID = new SqlCommand("SELECT COUNT(*) FROM [LibraryBooks] WHERE ([BookID] = @bookid)", conn);
             cmd.Parameters.AddWithValue("@bookid", bookId);
             cmd.Parameters.AddWithValue("@bookname", bookName);
             cmd.Parameters.AddWithValue("@bookauthor", authorName);

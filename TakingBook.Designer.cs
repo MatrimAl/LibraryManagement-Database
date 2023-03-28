@@ -1,6 +1,6 @@
 ﻿namespace LibraryManagement
 {
-    partial class ListBooks
+    partial class TakingBook
     {
         /// <summary>
         /// Required designer variable.

@@ -15,6 +15,7 @@ namespace LibraryManagement
 {
     public partial class GivingBook : Form
     {
+        public static String username = Login.username;
         public GivingBook()
         {
             InitializeComponent();
@@ -23,50 +24,79 @@ namespace LibraryManagement
 
         private void GivingBook_Load(object sender, EventArgs e)
         {
+            // TODO: This line of code loads data into the 'libraryManagementDataSet2.GivenBooks' table. You can move, or remove it, as needed.
+            this.givenBooksTableAdapter1.Fill(this.libraryManagementDataSet2.GivenBooks);
             // TODO: This line of code loads data into the 'libraryManagementDataSet1.GivenBooks' table. You can move, or remove it, as needed.
             this.givenBooksTableAdapter.Fill(this.libraryManagementDataSet1.GivenBooks);
             // TODO: This line of code loads data into the 'libraryManagementDataSet.LibraryBooks' table. You can move, or remove it, as needed.
             this.libraryBooksTableAdapter.Fill(this.libraryManagementDataSet.LibraryBooks);
 
         }
+        private void updateButton_Click(object sender, EventArgs e)
+        {
+            checkDatabase(BookID);
+        }
         public void LoadData()
         {
-            DataTable dt = new DataTable("LibraryBooks");
-            SqlDataAdapter adapter = new SqlDataAdapter("Select * From LibraryBooks", conn);
+            DataTable dt = new DataTable("GivenBooks");
+            SqlDataAdapter adapter = new SqlDataAdapter("Select * From GivenBooks where Username=@username", conn);
+            adapter.SelectCommand.Parameters.AddWithValue("@username", username);
             adapter.Fill(dt);
             dataGridView1.DataSource = dt;
-
         }
         public void updateDatabase(String bookId)
         {
-            String querry = "UPDATE TableName SET TableField = TableField + 1 Where BookID=@bookid";
+            String querry = "UPDATE LibraryBooks SET BookStock = BookStock + 1 Where BookID=@bookid";
             SqlCommand cmd = new SqlCommand(querry, conn);
             cmd.Parameters.AddWithValue("@bookid", bookId);
             conn.Open();
             cmd.ExecuteNonQuery();
             conn.Close();
         }
-        public void insertDatabase(String bookId, String bookName, String authorName, String bookStock, byte[] image)
+        public void insertDatabase(String bookId, String bookName, String authorName, byte[] image)
         {
-
+            conn.Open();
+            String querry = "INSERT INTO LibraryBooks (BookID, BookName, BookAuthor, BookStock, BookImage) Values (@bookid, @bookname, @bookauthor, @bookstock, @bookimage)";
+            SqlCommand cmd = new SqlCommand(querry, conn);
+            cmd.Parameters.AddWithValue("@bookid", bookId);
+            cmd.Parameters.AddWithValue("@bookname", bookName);
+            cmd.Parameters.AddWithValue("@bookauthor", authorName);
+            cmd.Parameters.AddWithValue("@bookstock", 1);
+            cmd.Parameters.AddWithValue("@bookimage", image);
+            cmd.ExecuteNonQuery();
+            conn.Close();
         }
-
+        public void deleteDatabase(String bookId) // kullanıcının  kütüphaneye verdiği kitabın, KENDİNDEN silinmesi için
+        {
+            conn.Open();
+            String querry = "DELETE FROM GivenBooks WHERE BookID = @bookid, Username=@username";
+            SqlCommand cmd = new SqlCommand(querry, conn);
+            cmd.Parameters.AddWithValue("@bookid", bookId);
+            cmd.Parameters.AddWithValue("@username", username); // admin yerine kullanıcı adı gelecek
+            cmd.ExecuteNonQuery();
+            conn.Close();
+        }
 
         public void checkDatabase(String bookId)
         {
-
+            // check username and bookID colm in GivenBooks database, if it doesnt match then update the LibraryBooks database and insert
+            String querry = "Select * From LibraryBooks Where BookID=@bookid";
+            SqlCommand cmd = new SqlCommand(querry, conn);
+            cmd.Parameters.AddWithValue("@bookid", bookId);
             conn.Open();
-            SqlCommand check_Book_ID = new SqlCommand("SELECT COUNT(*) FROM [LibraryUsers] WHERE ([BookID] = @bookid)", conn);
-            check_Book_ID.Parameters.AddWithValue("@bookid", bookId);
-            int BookIdExit = (int)check_Book_ID.ExecuteScalar();
-            if (BookIdExit > 0)
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.Read())
             {
-                 //update
+                updateDatabase(bookId);
+
             }
-            else { 
-                //insert
+            else
+            {
+                insertDatabase(bookId, BookName, BookAuthor, toBytes);
+
             }
             conn.Close();
+
         }
         public Image ConvertByteArrayToImage(byte[] data)
         {
@@ -74,23 +104,10 @@ namespace LibraryManagement
             Image img = (Image)converter.ConvertFrom(data);
             return img;
         }
-        byte[] ConvertImageToBytes(Image img)
-        {
-            if (img == null) return null;
-            else
-            {
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    img.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                    return ms.ToArray();
-                }
-            }
-        }
 
         String BookID;
         String BookName;
         String BookAuthor;
-        String BookStock;
         byte[] toBytes;
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -98,7 +115,6 @@ namespace LibraryManagement
             BookID = dataGridView1.CurrentRow.Cells[0].Value.ToString();
             BookName = dataGridView1.CurrentRow.Cells[1].Value.ToString();
             BookAuthor = dataGridView1.CurrentRow.Cells[2].Value.ToString();
-            BookStock = dataGridView1.CurrentRow.Cells[3].Value.ToString();
             if ((byte[])dataGridView1.CurrentRow.Cells[4].Value == null)
             {
                 toBytes = null;
@@ -121,5 +137,7 @@ namespace LibraryManagement
             }
 
         }
+
+        
     }
 }

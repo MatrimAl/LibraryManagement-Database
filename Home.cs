@@ -26,7 +26,7 @@ namespace LibraryManagement
 
         private void listBooks_Click(object sender, EventArgs e)
         {
-            ListBooks listBooks = new ListBooks();
+            TakingBook listBooks = new TakingBook();
             listBooks.ShowDialog();
         }
 
