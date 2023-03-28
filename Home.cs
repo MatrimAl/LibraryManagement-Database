@@ -21,19 +21,25 @@ namespace LibraryManagement
 
         private void button2_Click(object sender, EventArgs e)
         {
-
+            TakingBook takingBook = new TakingBook();
+            takingBook.ShowDialog();
         }
 
         private void listBooks_Click(object sender, EventArgs e)
         {
-            TakingBook listBooks = new TakingBook();
-            listBooks.ShowDialog();
+            
         }
 
         private void profilButton_Click(object sender, EventArgs e)
         {
             ChangePass changePass = new ChangePass();
             changePass.ShowDialog();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            GivingBook givingBook = new GivingBook();
+            givingBook.ShowDialog();
         }
     }
 }

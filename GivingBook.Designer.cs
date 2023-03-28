@@ -49,7 +49,7 @@
             this.givenBooksBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.libraryManagementDataSet2 = new LibraryManagement.LibraryManagementDataSet2();
             this.givenBooksTableAdapter1 = new LibraryManagement.LibraryManagementDataSet2TableAdapters.GivenBooksTableAdapter();
-            this.updateButton = new System.Windows.Forms.Button();
+            this.giveButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.libraryManagementDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.libraryBooksBindingSource)).BeginInit();
@@ -151,6 +151,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(541, 219);
             this.dataGridView1.TabIndex = 5;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // usernameDataGridViewTextBoxColumn
             // 
@@ -196,22 +197,22 @@
             // 
             this.givenBooksTableAdapter1.ClearBeforeFill = true;
             // 
-            // updateButton
+            // giveButton
             // 
-            this.updateButton.Location = new System.Drawing.Point(435, 266);
-            this.updateButton.Name = "updateButton";
-            this.updateButton.Size = new System.Drawing.Size(118, 26);
-            this.updateButton.TabIndex = 6;
-            this.updateButton.Text = "Update";
-            this.updateButton.UseVisualStyleBackColor = true;
-            this.updateButton.Click += new System.EventHandler(this.updateButton_Click);
+            this.giveButton.Location = new System.Drawing.Point(435, 266);
+            this.giveButton.Name = "giveButton";
+            this.giveButton.Size = new System.Drawing.Size(118, 26);
+            this.giveButton.TabIndex = 6;
+            this.giveButton.Text = "Give";
+            this.giveButton.UseVisualStyleBackColor = true;
+            this.giveButton.Click += new System.EventHandler(this.updateButton_Click);
             // 
             // GivingBook
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(566, 529);
-            this.Controls.Add(this.updateButton);
+            this.Controls.Add(this.giveButton);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.authorNameLabel);
             this.Controls.Add(this.bookNameLabel);
@@ -256,6 +257,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn bookNameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn bookAuthorDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewImageColumn bookImageDataGridViewImageColumn;
-        private System.Windows.Forms.Button updateButton;
+        private System.Windows.Forms.Button giveButton;
     }
 }

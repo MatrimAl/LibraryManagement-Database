@@ -39,7 +39,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(465, 101);
+            this.button2.Location = new System.Drawing.Point(465, 116);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(119, 93);
             this.button2.TabIndex = 1;
@@ -87,10 +87,11 @@
             this.button6.TabIndex = 6;
             this.button6.Text = "kitap ver";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // listBooks
             // 
-            this.listBooks.Location = new System.Drawing.Point(224, 101);
+            this.listBooks.Location = new System.Drawing.Point(224, 116);
             this.listBooks.Name = "listBooks";
             this.listBooks.Size = new System.Drawing.Size(119, 93);
             this.listBooks.TabIndex = 7;

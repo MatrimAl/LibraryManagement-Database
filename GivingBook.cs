@@ -49,13 +49,12 @@ namespace LibraryManagement
             String querry = "UPDATE LibraryBooks SET BookStock = BookStock + 1 Where BookID=@bookid";
             SqlCommand cmd = new SqlCommand(querry, conn);
             cmd.Parameters.AddWithValue("@bookid", bookId);
-            conn.Open();
+            
             cmd.ExecuteNonQuery();
             conn.Close();
         }
         public void insertDatabase(String bookId, String bookName, String authorName, byte[] image)
         {
-            conn.Open();
             String querry = "INSERT INTO LibraryBooks (BookID, BookName, BookAuthor, BookStock, BookImage) Values (@bookid, @bookname, @bookauthor, @bookstock, @bookimage)";
             SqlCommand cmd = new SqlCommand(querry, conn);
             cmd.Parameters.AddWithValue("@bookid", bookId);
@@ -84,18 +83,20 @@ namespace LibraryManagement
             SqlCommand cmd = new SqlCommand(querry, conn);
             cmd.Parameters.AddWithValue("@bookid", bookId);
             conn.Open();
-            SqlDataReader reader = cmd.ExecuteReader();
-            if (reader.Read())
+            SqlCommand check_Data = new SqlCommand("SELECT COUNT(*) FROM [LibraryBooks] WHERE ([BookID] = @bookid)", conn);
+            check_Data.Parameters.AddWithValue("@bookid", bookId);
+            int UserExist = (int)check_Data.ExecuteScalar();
+            if (UserExist > 0)
             {
-                updateDatabase(bookId);
+                updateDatabase(BookID);
 
             }
             else
             {
-                insertDatabase(bookId, BookName, BookAuthor, toBytes);
+                insertDatabase(BookID, BookName, BookAuthor, toBytes);
 
             }
-            conn.Close();
+            
 
         }
         public Image ConvertByteArrayToImage(byte[] data)
@@ -110,11 +111,11 @@ namespace LibraryManagement
         String BookAuthor;
         byte[] toBytes;
 
-        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            BookID = dataGridView1.CurrentRow.Cells[0].Value.ToString();
-            BookName = dataGridView1.CurrentRow.Cells[1].Value.ToString();
-            BookAuthor = dataGridView1.CurrentRow.Cells[2].Value.ToString();
+            BookID = dataGridView1.CurrentRow.Cells[1].Value.ToString();
+            BookName = dataGridView1.CurrentRow.Cells[2].Value.ToString();
+            BookAuthor = dataGridView1.CurrentRow.Cells[3].Value.ToString();
             if ((byte[])dataGridView1.CurrentRow.Cells[4].Value == null)
             {
                 toBytes = null;
@@ -135,9 +136,6 @@ namespace LibraryManagement
 
                 }
             }
-
         }
-
-        
     }
 }

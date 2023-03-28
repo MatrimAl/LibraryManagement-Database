@@ -22,6 +22,14 @@ namespace LibraryManagement
         {
             InitializeComponent();
         }
+        public void LoadData()
+        {
+            DataTable dt = new DataTable("LibraryBooks");
+            SqlDataAdapter adapter = new SqlDataAdapter("Select * From LibraryBooks", conn);
+            adapter.Fill(dt);
+            dataGridView1.DataSource = dt;
+
+        }
 
         private void ListBooks_Load(object sender, EventArgs e)
         {
@@ -35,12 +43,14 @@ namespace LibraryManagement
         {
             //insert to GivenBooks table
             conn.Open();
-            String querry = "INSERT INTO GivenBooks (BookID, BookName, BookAuthor, BookImage) Values (@bookid, @bookname, @bookauthor, @bookimage)";
+
+            String querry = "INSERT INTO GivenBooks (Username, BookID, BookName, BookAuthor, BookImage) Values (@username, @bookid, @bookname, @bookauthor, @bookimage)";
             SqlCommand cmd = new SqlCommand(querry, conn);
             cmd.Parameters.AddWithValue("@bookid", bookID);
             cmd.Parameters.AddWithValue("@bookname", bookName);
             cmd.Parameters.AddWithValue("@bookauthor", bookAuthor);
             cmd.Parameters.AddWithValue("@bookimage", image);
+            cmd.Parameters.AddWithValue("@username", username);
             cmd.ExecuteNonQuery();
             conn.Close();
 
@@ -50,6 +60,7 @@ namespace LibraryManagement
         public void updateDatabase(String bookID)
         {
             conn.Open();
+
             String querry2 = "UPDATE LibraryBooks SET BookStock = BookStock - 1 Where BookID=@bookid";
             SqlCommand cmd2 = new SqlCommand(querry2, conn);
             cmd2.Parameters.AddWithValue("@bookid", bookID);
@@ -60,7 +71,7 @@ namespace LibraryManagement
         {
             // if username and bookid is not match, insert to database selected book
             // if username and bookid is match, update database selected book
-            String querry = "Select * From GivenBooks Where BookID=@bookid, Username=@username";
+            String querry = "Select * From GivenBooks Where BookID=@bookid and Username=@username";
             SqlCommand cmd = new SqlCommand(querry, conn);
             cmd.Parameters.AddWithValue("@bookid", bookId);
             cmd.Parameters.AddWithValue("@username", username);
@@ -69,14 +80,18 @@ namespace LibraryManagement
             if (reader.Read())
             {
                 MessageBox.Show("You have already this book.");
+                conn.Close();
+
 
             }
             else
             {
-                insertDatabase(bookId, BookName, BookAuthor, toBytes);
-
+                conn.Close();
+                insertDatabase(BookID, BookName, BookAuthor, toBytes);
+                updateDatabase(BookID);
+                LoadData();
             }
-            conn.Close();
+           
 
 
         }
@@ -116,6 +131,11 @@ namespace LibraryManagement
                 }
             }
             
+        }
+
+        private void takeBook_Click(object sender, EventArgs e)
+        {
+            checkDatabase(BookID);
         }
     }
 }

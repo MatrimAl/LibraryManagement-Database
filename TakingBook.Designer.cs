@@ -43,6 +43,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.authorLabel = new System.Windows.Forms.Label();
             this.bookLabel = new System.Windows.Forms.Label();
+            this.takeBook = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.libraryBooksBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.libraryManagementDataSet)).BeginInit();
@@ -166,18 +167,30 @@
             this.bookLabel.Size = new System.Drawing.Size(0, 20);
             this.bookLabel.TabIndex = 5;
             // 
-            // ListBooks
+            // takeBook
+            // 
+            this.takeBook.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.takeBook.Location = new System.Drawing.Point(420, 292);
+            this.takeBook.Name = "takeBook";
+            this.takeBook.Size = new System.Drawing.Size(110, 23);
+            this.takeBook.TabIndex = 6;
+            this.takeBook.Text = "Take";
+            this.takeBook.UseVisualStyleBackColor = true;
+            this.takeBook.Click += new System.EventHandler(this.takeBook_Click);
+            // 
+            // TakingBook
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(542, 581);
+            this.Controls.Add(this.takeBook);
             this.Controls.Add(this.bookLabel);
             this.Controls.Add(this.authorLabel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.bookName);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.dataGridView1);
-            this.Name = "ListBooks";
+            this.Name = "TakingBook";
             this.Text = "ListBooks";
             this.Load += new System.EventHandler(this.ListBooks_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -205,5 +218,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label authorLabel;
         private System.Windows.Forms.Label bookLabel;
+        private System.Windows.Forms.Button takeBook;
     }
 }
