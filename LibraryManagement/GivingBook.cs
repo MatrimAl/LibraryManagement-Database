@@ -24,17 +24,19 @@ namespace LibraryManagement
 
         private void GivingBook_Load(object sender, EventArgs e)
         {
-            // TODO: This line of code loads data into the 'libraryManagementDataSet2.GivenBooks' table. You can move, or remove it, as needed.
+            
             this.givenBooksTableAdapter1.Fill(this.libraryManagementDataSet2.GivenBooks);
-            // TODO: This line of code loads data into the 'libraryManagementDataSet1.GivenBooks' table. You can move, or remove it, as needed.
+            
             this.givenBooksTableAdapter.Fill(this.libraryManagementDataSet1.GivenBooks);
-            // TODO: This line of code loads data into the 'libraryManagementDataSet.LibraryBooks' table. You can move, or remove it, as needed.
+           
             this.libraryBooksTableAdapter.Fill(this.libraryManagementDataSet.LibraryBooks);
 
         }
         private void updateButton_Click(object sender, EventArgs e)
         {
             checkDatabase(BookID);
+            deleteDatabase(BookID);
+            LoadData();
         }
         public void LoadData()
         {
@@ -43,6 +45,7 @@ namespace LibraryManagement
             adapter.SelectCommand.Parameters.AddWithValue("@username", username);
             adapter.Fill(dt);
             dataGridView1.DataSource = dt;
+
         }
         public void updateDatabase(String bookId)
         {
@@ -68,11 +71,12 @@ namespace LibraryManagement
         public void deleteDatabase(String bookId) // kullanıcının  kütüphaneye verdiği kitabın, KENDİNDEN silinmesi için
         {
             conn.Open();
-            String querry = "DELETE FROM GivenBooks WHERE BookID = @bookid, Username=@username";
+            String querry = "DELETE FROM GivenBooks WHERE BookID = @bookid AND Username=@username";
             SqlCommand cmd = new SqlCommand(querry, conn);
             cmd.Parameters.AddWithValue("@bookid", bookId);
             cmd.Parameters.AddWithValue("@username", username); // admin yerine kullanıcı adı gelecek
             cmd.ExecuteNonQuery();
+
             conn.Close();
         }
 
@@ -131,8 +135,8 @@ namespace LibraryManagement
                     byte[] toBytes = (byte[])dataGridView1.CurrentRow.Cells[4].Value;
                     pictureBox1.Image = ConvertByteArrayToImage(toBytes);
                     pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-                    bookNameLabel.Text = dataGridView1.CurrentRow.Cells[1].Value.ToString();
-                    authorNameLabel.Text = dataGridView1.CurrentRow.Cells[2].Value.ToString();
+                    bookNameLabel.Text = dataGridView1.CurrentRow.Cells[2].Value.ToString();
+                    authorNameLabel.Text = dataGridView1.CurrentRow.Cells[3].Value.ToString();
 
                 }
             }
