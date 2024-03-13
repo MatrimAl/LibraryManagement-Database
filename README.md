@@ -28,12 +28,19 @@ Thıs project is basic application for library owners and their users. I codded 
 ## Video
 
 
-https://github.com/MatrimAl/LibraryManagement-Database/assets/111320991/7dfb57f5-5872-4d9c-b3ec-30037eeb04b9
+
+
+https://github.com/MatrimAl/LibraryManagement-Database/assets/111320991/b5c13f61-f294-441d-851d-26900b90e99b
 
 
 
 
-https://github.com/MatrimAl/LibraryManagement-Database/assets/111320991/0008eda6-48a8-4649-a1ea-2a605772f27d
+
+
+
+https://github.com/MatrimAl/LibraryManagement-Database/assets/111320991/0caea39b-2fcf-4468-8f88-55fa71bc01de
+
+
 
 
   
